@@ -1,0 +1,32 @@
+## docker tag jeecg-cloud-redis 192.168.1.11:5000/jeecg-cloud-redis:1.0
+## docker push 192.168.1.11:5000/jeecg-cloud-redis:1.0
+## redis-cli --cluster create 192.168.1.11:6379 192.168.1.11:6380 192.168.1.11:6381
+version: '2'
+services:
+  jeecg-cloud-redis:
+    restart: always
+    network_mode:
+      host
+    image: 192.168.1.11:5000/jeecg-cloud-redis:1.0
+    container_name: jeecg-cloud-redis
+    hostname: jeecg-cloud-redis
+    command:
+      "redis-server --port 6379 --protected-mode no --bind 0.0.0.0  --cluster-enabled yes"
+  jeecg-cloud-redis2:
+    restart: always
+    network_mode:
+      host
+    image: 192.168.1.11:5000/jeecg-cloud-redis:1.0
+    container_name: jeecg-cloud-redis2
+    hostname: jeecg-cloud-redis2
+    command:
+      "redis-server --port 6380 --protected-mode no --bind 0.0.0.0  --cluster-enabled yes"
+  jeecg-cloud-redis3:
+    restart: always
+    network_mode:
+      host
+    image: 192.168.1.11:5000/jeecg-cloud-redis:1.0
+    container_name: jeecg-cloud-redis3
+    hostname: jeecg-cloud-redis3
+    command:
+      "redis-server --port 6381 --protected-mode no --bind 0.0.0.0  --cluster-enabled yes"

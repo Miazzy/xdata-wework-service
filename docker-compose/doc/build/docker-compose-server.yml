@@ -1,0 +1,75 @@
+#### 镜像上传
+# 192.168.1.11:5000
+# docker仓库
+#docker tag jeecg-cloud-mysql 192.168.1.11:5000/jeecg-cloud-mysql:1.0
+#docker tag jeecg-cloud-gateway 192.168.1.11:5000/jeecg-cloud-gateway:1.0
+#docker tag jeecg-cloud-system 192.168.1.11:5000/jeecg-cloud-system:1.0
+#docker tag jeecg-cloud-demo 192.168.1.11:5000/jeecg-cloud-demo:1.0
+#
+#docker push 192.168.1.11:5000/jeecg-cloud-mysql:1.0
+#docker push 192.168.1.11:5000/jeecg-cloud-gateway:1.0
+#docker push 192.168.1.11:5000/jeecg-cloud-system:1.0
+#docker push 192.168.1.11:5000/jeecg-cloud-demo:1.0
+
+version: '2'
+services:
+  jeecg-cloud-mysql:
+    image: 192.168.1.11:5000/jeecg-cloud-mysql:1.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    restart: always
+    container_name: jeecg-cloud-mysql
+    command:
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_general_ci
+      --explicit_defaults_for_timestamp=true
+      --lower_case_table_names=1
+      --max_allowed_packet=128M
+    ports:
+      - 3306:3306
+
+  jeecg-cloud-redis:
+    image: redis:5
+    ports:
+      - 6379:6379
+    restart: always
+    container_name: jeecg-cloud-redis
+    hostname: jeecg-cloud-redis
+
+  jeecg-cloud-nacos:
+    image: nacos/nacos-server
+    restart: always
+    container_name: jeecg-cloud-nacos
+    hostname: jeecg-cloud-nacos
+    ports:
+      - 8848:8848
+    environment:
+      MODE: standalone
+
+  jeecg-cloud-gateway:
+    image: 192.168.1.11:5000/jeecg-cloud-gateway:1.0
+    restart: always
+    ports:
+      - 9999:9999
+    container_name: jeecg-cloud-gateway
+    hostname: jeecg-cloud-gateway
+
+  jeecg-cloud-system:
+    image: 192.168.1.11:5000/jeecg-cloud-system:1.0
+    restart: always
+    container_name: jeecg-cloud-system
+    hostname: jeecg-cloud-system
+
+  jeecg-cloud-demo:
+    image: 192.168.1.11:5000/jeecg-cloud-demo:1.0
+    restart: always
+    container_name: jeecg-cloud-demo
+    hostname: jeecg-cloud-demo
+
+#  jeecg-cloud-monitor:
+#    image: 192.168.1.11:5000/jeecg-cloud-monitor:1.0
+#    restart: always
+#    ports:
+#      - 9111:9111
+#    container_name: jeecg-cloud-monitor
+#    hostname: jeecg-cloud-monitor

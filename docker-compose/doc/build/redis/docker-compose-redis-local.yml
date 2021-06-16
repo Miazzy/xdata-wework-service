@@ -1,0 +1,61 @@
+
+version: '2'
+services:
+  jeecg-cloud-redis:
+    build:
+      context: cluster/
+    restart: always
+    networks:
+      jeecg-cloud-network-default:
+        aliases:
+          - jeecg-cloud-redis
+        ipv4_address: 172.27.0.2
+    ports:
+      - 6379:6379
+      - 16379:16379
+    image: jeecg-cloud-redis
+    container_name: jeecg-cloud-redis
+    hostname: jeecg-cloud-redis
+    command:
+      "redis-server --port 6379 --loglevel debug --protected-mode no --bind 0.0.0.0  --cluster-enabled yes"
+  jeecg-cloud-redis2:
+    build:
+      context: cluster/
+    restart: always
+    networks:
+      jeecg-cloud-network-default:
+        aliases:
+          - jeecg-cloud-redis2
+        ipv4_address: 172.27.0.3
+    ports:
+      - 6380:6379
+      - 16380:16379
+    image: jeecg-cloud-redis2
+    container_name: jeecg-cloud-redis2
+    hostname: jeecg-cloud-redis2
+    command:
+      "redis-server --port 6379 --loglevel debug --protected-mode no --bind 0.0.0.0  --cluster-enabled yes"
+  jeecg-cloud-redis3:
+    build:
+      context: cluster/
+    restart: always
+    networks:
+      jeecg-cloud-network-default:
+        aliases:
+          - jeecg-cloud-redis
+        ipv4_address: 172.27.0.4
+    ports:
+      - 6381:6379
+      - 16381:16379
+    image: jeecg-cloud-redis3
+    container_name: jeecg-cloud-redis3
+    hostname: jeecg-cloud-redis3
+    command:
+      "redis-server --port 6379 --loglevel debug --protected-mode no --bind 0.0.0.0  --cluster-enabled yes"
+networks:
+  jeecg-cloud-network-default:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.27.0.2/16
+          gateway: 172.27.0.1
