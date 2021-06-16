@@ -20,6 +20,7 @@ const config = {
         创达: { /**创达*/
             id: 'ww3806b33a15a7d3fc',
             agentid: 1000013,
+            admin: 1000013,
             reward: 1000015,
             stock: 1000020,
             legal: 1000104, // /** 创达的可能需要替换 */
@@ -166,15 +167,10 @@ const config = {
         api_url: 'https://api.yunwisdom.club:30443/gateway-xmysql/api',
     },
     seal: {
-        group: { /** 群聊机器人 hook 目前已经未使用 */
-            management: 'https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=2da6821a-36d3-495b-8092-7220066a0cd8',
-            reception: 'https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=181fbd10-47c5-4c61-ba2d-3c4762d5a64f',
-            archive: 'https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=07b69342-4b35-4b2e-ad69-249e23c57c21',
-        },
         users: {
             management: [{ id: 'yanggc', name: '杨高春', phone: '13880556967', }], //印章管理人员列表
             reception: [], //前台接待人员列表
-            archive: [], //归档人员列表
+            archive: [], //档案归档管理人员列表
         },
     },
     timestamp: {
