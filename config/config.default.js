@@ -17,8 +17,12 @@ module.exports = appInfo => {
         myAppName: 'xdata-wework-service',
     };
 
-    const nacosIP = '172.18.1.51'; //nacos IP地址
-    const nacosList = [`${nacosIP}:8848`, `${nacosIP}:8849`, `${nacosIP}:8850`];
+    const nacosIP = 'nacos.yunwisdom.club'; //nacos IP地址
+    const nacosList = [`${nacosIP}:30080`];
+
+    const redisIP = 'r-bp16338c31627a24pd.redis.rds.aliyuncs.com';
+    const redisPassword = 'Redis@password';
+    const redisPort = 6379;
 
     config.security = {
         csrf: {
@@ -81,9 +85,9 @@ module.exports = appInfo => {
             },
             redis: {
                 driver: redisStore,
-                host: '172.18.254.95',
-                port: 36379,
-                password: '',
+                host: redisIP,
+                password: redisPassword,
+                port: redisPort,
                 db: 0,
                 ttl: 600,
                 valid: _ => _ !== null,
@@ -171,10 +175,10 @@ module.exports = appInfo => {
     };
 
     config.redis = {
-        client: { // single
-            port: 36379, // Redis port
-            host: '172.18.254.95', // Redis host
-            password: '',
+        client: {
+            host: redisIP,
+            password: redisPassword,
+            port: redisPort,
             db: 0,
         },
     };
