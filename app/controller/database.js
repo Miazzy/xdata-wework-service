@@ -30,14 +30,15 @@ class DatabaseController extends Controller {
 
         const { ctx, app } = this;
         const query = ctx.query;
+        const tdatabase = query.tdatabase || query._database || 'default';
         const table = query.table || ctx.params.table;
         const where = query.where || ctx.params.where;
         const order = query.order || query._order || query.orderby || query._orderby || ctx.params.order;
         const fields = query.fields || query._fields;
         const page = query.page || query._page || query._p;
         const size = query.size || query._size || query._s;
-        let top = query.top || query._top || query._t || 10000;
         const _where = query._where;
+        let top = query.top || query._top || query._t || 10000;
 
         let wheresql = '';
         let orderby = '';
@@ -91,7 +92,7 @@ class DatabaseController extends Controller {
 
             // 如果数据为空，则查询数据库
             if (!result) {
-                result = await global.mssqlpool.query(sql);
+                result = await global.mssqlpool[tdatabase].query(sql);
                 await app.cache.store('redis').set(sql, JSON.stringify(result), 10);
             } else {
                 result = JSON.parse(result);
@@ -112,6 +113,7 @@ class DatabaseController extends Controller {
 
         const { ctx } = this;
         const query = ctx.query;
+        const tdatabase = query.tdatabase || query._database || 'default';
         const table = query.table || ctx.params.table;
         const page = query.page || query._page || query._p || 0;
         const size = query.size || query._size || query._s || 20;
@@ -142,7 +144,7 @@ class DatabaseController extends Controller {
             console.log(` table : ${table} & columns : ${columns} & wheresql : ${wheresql} & orderby : ${orderby}`);
 
             const sql = ` select TOP 1 * from ${config.database}.dbo.${table} ${wheresql} ${orderby} ${limits} `;
-            const result = await global.mssqlpool.query(sql);
+            const result = await global.mssqlpool[tdatabase].query(sql);
 
             console.log(` sql : ${sql} `);
 
@@ -158,6 +160,7 @@ class DatabaseController extends Controller {
 
         const { ctx } = this;
         const query = ctx.query;
+        const tdatabase = query.tdatabase || query._database || 'default';
         let table = query.table || ctx.params.table;
         let node = query.node || ctx.params.node;
 
@@ -181,7 +184,7 @@ class DatabaseController extends Controller {
         const keys = `(${Object.keys(node).toString()})`; // (column1, column2, column3, ...)
         const values = `(${Object.values(node).toString()})`; // (value1, value2, value3, ...)
         const sql = `INSERT INTO ${config.database}.dbo.${table} ${keys} values ${values} `;
-        const result = await global.mssqlpool.query(sql);
+        const result = await global.mssqlpool[tdatabase].query(sql);
         console.log(` sql : ${sql} `);
         ctx.body = result;
 
@@ -194,6 +197,7 @@ class DatabaseController extends Controller {
 
         const { ctx } = this;
         const query = ctx.query;
+        const tdatabase = query.tdatabase || query._database || 'default';
         let table = query.table || ctx.params.table;
         let node = query.node || ctx.params.node;
         const _where = query._where;
@@ -238,7 +242,7 @@ class DatabaseController extends Controller {
         statement = statement.slice(0, -1);
 
         const sql = `UPDATE ${config.database}.dbo.${table} SET ${statement} ${condition} ; `;
-        const result = await global.mssqlpool.query(sql);
+        const result = await global.mssqlpool[tdatabase].query(sql);
         console.log(` sql : ${sql} `);
         ctx.body = result;
     }
@@ -250,6 +254,7 @@ class DatabaseController extends Controller {
 
         const { ctx } = this;
         const query = ctx.query;
+        const tdatabase = query.tdatabase || query._database || 'default';
         let table = query.table || ctx.params.table;
         let node = query.node || ctx.params.node;
         const _where = query._where;
@@ -291,7 +296,7 @@ class DatabaseController extends Controller {
         });
 
         const sql = `DELETE FROM ${config.database}.dbo.${table} ${condition} ${statement}  ; `;
-        const result = await global.mssqlpool.query(sql);
+        const result = await global.mssqlpool[tdatabase].query(sql);
         console.log(` sql : ${sql} `);
         ctx.body = result;
     }
@@ -300,15 +305,13 @@ class DatabaseController extends Controller {
 
         const { ctx } = this;
         const query = ctx.query;
-
+        const tdatabase = query.tdatabase || query._database || 'default';
         const table = query.table || ctx.params.table;
         const ids = query.ids || ctx.params.ids;
         const column = query.column || ctx.params.column;
 
         const sql = `DELETE FROM ${table} WHERE ${column} IN ( ${ids} )`;
-
-        const result = await global.mssqlpool.query(sql);
-
+        const result = await global.mssqlpool[tdatabase].query(sql);
         console.log(` sql : ${sql} `);
 
         ctx.body = result;
@@ -318,16 +321,14 @@ class DatabaseController extends Controller {
 
         const { ctx } = this;
         const query = ctx.query;
-
+        const tdatabase = query.tdatabase || query._database || 'default';
         const table = query.table || ctx.params.table;
         const ids = query.ids || ctx.params.ids;
         const column = query.column || ctx.params.column;
         const fields = query.fields || query._fields;
 
         const sql = `SELECT ${fields} FROM ${table} WHERE ${column} IN ( ${ids} )`;
-
-        const result = await global.mssqlpool.query(sql);
-
+        const result = await global.mssqlpool[tdatabase].query(sql);
         console.log(` sql : ${sql} `);
 
         ctx.body = result.recordset;
@@ -338,6 +339,7 @@ class DatabaseController extends Controller {
 
         const { ctx } = this;
         const query = ctx.query;
+        const tdatabase = query.tdatabase || query._database || 'default';
         const table = query.table || ctx.params.table;
         const _where = query._where;
 
@@ -349,9 +351,7 @@ class DatabaseController extends Controller {
         }
 
         const sql = `SELECT COUNT(1) AS no_of_rows FROM ${table} ${wheresql} `;
-
-        const result = await global.mssqlpool.query(sql);
-
+        const result = await global.mssqlpool[tdatabase].query(sql);
         console.log(` sql : ${sql} `);
 
         ctx.body = result.recordset;
@@ -395,7 +395,8 @@ class DatabaseController extends Controller {
     async queryEmployeeAll() {
 
         const { ctx, app } = this;
-
+        const query = ctx.query;
+        const tdatabase = query.tdatabase || query._database || 'default';
         // 缓存控制器
         const store = app.cache.store('redis');
 
@@ -410,7 +411,7 @@ class DatabaseController extends Controller {
             return JSON.parse(userlist);
         }
 
-        const result = await global.mssqlpool.query(sql);
+        const result = await global.mssqlpool[tdatabase].query(sql);
 
         // 遍历数据，每个用户ID，存一个用户信息
         result.recordset.map(item => {

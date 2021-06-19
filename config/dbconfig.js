@@ -56,7 +56,9 @@ const mysql = {
  */
 const init = async() => {
     if (global.mssqlpool == null || typeof global.mssqlpool === 'undefined' || !this.mssqlpool) {
-        global.mssqlpool = await new sql.ConnectionPool(config).connect();
+        global.mssqlpool = {};
+        global.mssqlpool.default = await new sql.ConnectionPool(config).connect();
+        global.mssqlpool.cd = await new sql.ConnectionPool(configcd).connect();
         console.log('connect pool init over ... ');
     }
 };
