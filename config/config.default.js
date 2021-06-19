@@ -210,11 +210,11 @@ module.exports = appInfo => {
             apiVersion: '7.x',
         },
         mysql: {
-            host: '172.18.254.95',
-            port: '39090',
-            user: 'zhaoziyun',
-            password: 'ziyequma',
-            database: 'xdata',
+            host: config.mysql.client.host,
+            port: config.mysql.client.port,
+            user: config.mysql.client.user,
+            password: config.mysql.client.password,
+            database: config.mysql.client.database,
         },
         job1: {
             database: 'xdata',
