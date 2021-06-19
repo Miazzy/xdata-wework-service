@@ -37,8 +37,6 @@ module.exports = appInfo => {
         allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH',
     };
 
-
-
     config.mailer = {
         host: 'smtp.exmail.qq.com',
         port: 465,
@@ -154,20 +152,6 @@ module.exports = appInfo => {
             min: 0,
             max: 10,
             idleTimeoutMillis: 3000,
-        },
-    };
-
-    // 网关代理配置
-    config.httpProxy = {
-        '@nacos': {
-            logger: console,
-            serverList: nacosList, // replace to real nacos serverList
-            namespace: 'public',
-        },
-        '/apis': {
-            target: ['http://172.18.254.95:3000', 'http://172.18.254.96:3000'],
-            serviceName: 'xdata-xmysql-service',
-            pathRewrite: { '^/apis': '/api_' },
         },
     };
 
