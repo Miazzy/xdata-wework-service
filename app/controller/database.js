@@ -17,16 +17,6 @@ const config = dbconfig;
 class DatabaseController extends Controller {
 
     /**
-     * @function 初始化数据库连接池
-     */
-    async init() {
-        if (this.pool == null || typeof this.pool === 'undefined' || !this.pool) {
-            this.pool = await new sql.ConnectionPool(config).connect();
-            console.log('connect pool init over ... ');
-        }
-    }
-
-    /**
      * @function 执行数据库查询操作
      */
     async query() {
@@ -37,8 +27,6 @@ class DatabaseController extends Controller {
      * @function 执行数据库查询操作
      */
     async where() {
-
-        await this.init();
 
         const { ctx, app } = this;
         const query = ctx.query;
@@ -68,7 +56,6 @@ class DatabaseController extends Controller {
 
             if (query && _where) {
                 wheresql = whereHelp.getWhereSQL(_where, ' where ');
-
                 console.log(` wheresql : ${JSON.stringify(wheresql)} `);
             }
 
@@ -104,7 +91,7 @@ class DatabaseController extends Controller {
 
             // 如果数据为空，则查询数据库
             if (!result) {
-                result = await this.pool.query(sql);
+                result = await global.mssqlpool.query(sql);
                 await app.cache.store('redis').set(sql, JSON.stringify(result), 10);
             } else {
                 result = JSON.parse(result);
@@ -122,8 +109,6 @@ class DatabaseController extends Controller {
      * @function 执行数据库查询存在操作
      */
     async exists() {
-
-        await this.init();
 
         const { ctx } = this;
         const query = ctx.query;
@@ -157,7 +142,7 @@ class DatabaseController extends Controller {
             console.log(` table : ${table} & columns : ${columns} & wheresql : ${wheresql} & orderby : ${orderby}`);
 
             const sql = ` select TOP 1 * from ${config.database}.dbo.${table} ${wheresql} ${orderby} ${limits} `;
-            const result = await this.pool.query(sql);
+            const result = await global.mssqlpool.query(sql);
 
             console.log(` sql : ${sql} `);
 
@@ -170,8 +155,6 @@ class DatabaseController extends Controller {
      * @function 执行数据库新增操作
      */
     async insert() {
-
-        await this.init();
 
         const { ctx } = this;
         const query = ctx.query;
@@ -197,13 +180,9 @@ class DatabaseController extends Controller {
         // 遍历node,获取keys字符串和values字符串
         const keys = `(${Object.keys(node).toString()})`; // (column1, column2, column3, ...)
         const values = `(${Object.values(node).toString()})`; // (value1, value2, value3, ...)
-
         const sql = `INSERT INTO ${config.database}.dbo.${table} ${keys} values ${values} `;
-
-        const result = await this.pool.query(sql);
-
+        const result = await global.mssqlpool.query(sql);
         console.log(` sql : ${sql} `);
-
         ctx.body = result;
 
     }
@@ -212,8 +191,6 @@ class DatabaseController extends Controller {
      * @function 执行数据库更新操作
      */
     async update() {
-
-        await this.init();
 
         const { ctx } = this;
         const query = ctx.query;
@@ -261,11 +238,8 @@ class DatabaseController extends Controller {
         statement = statement.slice(0, -1);
 
         const sql = `UPDATE ${config.database}.dbo.${table} SET ${statement} ${condition} ; `;
-
-        const result = await this.pool.query(sql);
-
+        const result = await global.mssqlpool.query(sql);
         console.log(` sql : ${sql} `);
-
         ctx.body = result;
     }
 
@@ -273,8 +247,6 @@ class DatabaseController extends Controller {
      * @function 执行数据库删除操作
      */
     async delete() {
-
-        await this.init();
 
         const { ctx } = this;
         const query = ctx.query;
@@ -319,18 +291,12 @@ class DatabaseController extends Controller {
         });
 
         const sql = `DELETE FROM ${config.database}.dbo.${table} ${condition} ${statement}  ; `;
-
-        const result = await this.pool.query(sql);
-
+        const result = await global.mssqlpool.query(sql);
         console.log(` sql : ${sql} `);
-
         ctx.body = result;
-
     }
 
     async bulkDelete() {
-
-        await this.init();
 
         const { ctx } = this;
         const query = ctx.query;
@@ -341,7 +307,7 @@ class DatabaseController extends Controller {
 
         const sql = `DELETE FROM ${table} WHERE ${column} IN ( ${ids} )`;
 
-        const result = await this.pool.query(sql);
+        const result = await global.mssqlpool.query(sql);
 
         console.log(` sql : ${sql} `);
 
@@ -349,8 +315,6 @@ class DatabaseController extends Controller {
     }
 
     async bulkRead(req, res) {
-
-        await this.init();
 
         const { ctx } = this;
         const query = ctx.query;
@@ -362,7 +326,7 @@ class DatabaseController extends Controller {
 
         const sql = `SELECT ${fields} FROM ${table} WHERE ${column} IN ( ${ids} )`;
 
-        const result = await this.pool.query(sql);
+        const result = await global.mssqlpool.query(sql);
 
         console.log(` sql : ${sql} `);
 
@@ -371,8 +335,6 @@ class DatabaseController extends Controller {
     }
 
     async count(req, res) {
-
-        await this.init();
 
         const { ctx } = this;
         const query = ctx.query;
@@ -388,7 +350,7 @@ class DatabaseController extends Controller {
 
         const sql = `SELECT COUNT(1) AS no_of_rows FROM ${table} ${wheresql} `;
 
-        const result = await this.pool.query(sql);
+        const result = await global.mssqlpool.query(sql);
 
         console.log(` sql : ${sql} `);
 
@@ -432,8 +394,6 @@ class DatabaseController extends Controller {
      */
     async queryEmployeeAll() {
 
-        await this.init();
-
         const { ctx, app } = this;
 
         // 缓存控制器
@@ -450,7 +410,7 @@ class DatabaseController extends Controller {
             return JSON.parse(userlist);
         }
 
-        const result = await this.pool.query(sql);
+        const result = await global.mssqlpool.query(sql);
 
         // 遍历数据，每个用户ID，存一个用户信息
         result.recordset.map(item => {
