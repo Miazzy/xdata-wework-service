@@ -37,22 +37,7 @@ module.exports = appInfo => {
         allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH',
     };
 
-    config.dbconfig = {
-        user: 'meeting',
-        password: 'meeting',
-        server: '172.18.1.11',
-        database: 'newecology',
-        port: 1433,
-        options: {
-            encrypt: false,
-            enableArithAbort: false,
-        },
-        pool: {
-            min: 0,
-            max: 10,
-            idleTimeoutMillis: 3000,
-        },
-    };
+
 
     config.mailer = {
         host: 'smtp.exmail.qq.com',
@@ -152,6 +137,23 @@ module.exports = appInfo => {
                 password: 'Leading888',
                 database: 'ecology',
             },
+        },
+    };
+
+    config.dbconfig = {
+        user: config.mssql.clients.db1.user,
+        password: config.mssql.clients.db1.password,
+        server: config.mssql.clients.db1.server,
+        database: config.mssql.clients.db1.database,
+        port: config.mssql.clients.db1.port,
+        options: {
+            encrypt: false,
+            enableArithAbort: false,
+        },
+        pool: {
+            min: 0,
+            max: 10,
+            idleTimeoutMillis: 3000,
         },
     };
 

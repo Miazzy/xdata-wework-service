@@ -13,7 +13,6 @@ const wxconfig = require('../../config/wxconfig');
 
 // 设置数据库连接地址
 const config = dbconfig;
-const pool = { ld: null, cd: null };
 
 /**
  * @abstract 定义前端业务处理相关Controller
@@ -21,29 +20,9 @@ const pool = { ld: null, cd: null };
 class DataSyncController extends Controller {
 
     /**
-     * @function 初始化数据库连接池
-     */
-    async init() {
-
-
-        if (pool.ld == null || typeof pool.ld === 'undefined' || !pool.ld) {
-            pool.ld = await new sql.ConnectionPool(config.config).connect();
-            console.log('connect ld pool init over ... ');
-        }
-
-        if (pool.cd == null || typeof pool.cd === 'undefined' || !pool.cd) {
-            pool.cd = await new sql.ConnectionPool(config.configcd).connect();
-            console.log('connect cd pool init over ... ');
-        }
-
-    }
-
-    /**
      * @function 同步泛微OA表hrmresource到MySQL数据库bs_hrmresource中
      */
     async syncHRM() {
-
-        await this.init();
 
         const { ctx, app } = this;
 
@@ -67,7 +46,7 @@ class DataSyncController extends Controller {
 
         // 查询领地表中大于ldID的所有员工数据 id + 1000000
         sql = `select * from ${config.config.database}.dbo.hrmresource  where id > ${maxldID} order by id asc offset 0 row fetch next 10000 row only `;
-        response = await pool.ld.query(sql);
+        response = await global.mssqlpool.default.query(sql);
         ldList = response.recordset;
         ldList.map(item => {
             item.id = item.id + 1000000;
@@ -76,7 +55,7 @@ class DataSyncController extends Controller {
 
         // 查询创达表中大于cdID的所有员工数据 id + 2000000
         sql = `select * from ${config.configcd.database}.dbo.hrmresource  where id > ${maxcdID} order by id asc offset 0 row fetch next 10000 row only `;
-        response = await pool.cd.query(sql);
+        response = await global.mssqlpool.cd.query(sql);
         cdList = response.recordset;
         cdList.map(item => {
             item.id = item.id + 2000000;
@@ -101,8 +80,6 @@ class DataSyncController extends Controller {
      */
     async syncHRM_INC() {
 
-        await this.init();
-
         const { ctx, app } = this;
 
         let response = null;
@@ -115,7 +92,7 @@ class DataSyncController extends Controller {
 
         // 查询领地表中大于ldID的所有员工数据 id + 1000000
         sql = `select * from ${config.config.database}.dbo.hrmresource  where id > 0 order by id asc offset 0 row fetch next 10000 row only `;
-        response = await pool.ld.query(sql);
+        response = await global.mssqlpool.default.query(sql);
         ldList = response.recordset;
         ldList.map(item => {
             item.id = item.id + 1000000;
@@ -124,7 +101,7 @@ class DataSyncController extends Controller {
 
         // 查询创达表中大于cdID的所有员工数据 id + 2000000
         sql = `select * from ${config.configcd.database}.dbo.hrmresource  where id > 0 order by id asc offset 0 row fetch next 10000 row only `;
-        response = await pool.cd.query(sql);
+        response = await global.mssqlpool.cd.query(sql);
         cdList = response.recordset;
         cdList.map(item => {
             item.id = item.id + 2000000;
@@ -149,8 +126,6 @@ class DataSyncController extends Controller {
      */
     async syncHRMScheduleSign() {
 
-        await this.init();
-
         const { ctx, app } = this;
 
         let response = null;
@@ -162,7 +137,7 @@ class DataSyncController extends Controller {
         maxID = response[0].id;
 
         sql = `select * from ${config.config.database}.dbo.HrmScheduleSign  where id > ${maxID} order by id asc offset 0 row fetch next 10000 row only `;
-        response = await pool.ld.query(sql);
+        response = await global.mssqlpool.default.query(sql);
         list = response.recordset;
 
         // 合并查询到的员工签到数据，将数据insert到MySQL的bs_hrmschedulesign中
@@ -180,10 +155,7 @@ class DataSyncController extends Controller {
      */
     async syncHRMScheduleSignDate() {
 
-        await this.init();
-
         const { ctx, app } = this;
-
         const date = ctx.query.date || ctx.params.date || ''; // 获取电话号码
 
         let response = null;
@@ -191,7 +163,7 @@ class DataSyncController extends Controller {
         let list = [];
 
         sql = `select * from ${config.config.database}.dbo.HrmScheduleSign where signDate like '%${date}%' order by id asc offset 0 row fetch next 1000000 row only `;
-        response = await pool.ld.query(sql);
+        response = await global.mssqlpool.default.query(sql);
         list = response.recordset;
 
         // 合并查询到的员工签到数据，将数据insert到MySQL的bs_hrmschedulesign中

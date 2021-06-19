@@ -6,14 +6,17 @@
 const sql = require('mssql');
 const defaultConfig = require('./config.default');
 
+// 数据库连接池配置
 const pool = {
     min: 0,
     max: 10,
     idleTimeoutMillis: 3000,
 };
 
+// 数据库options
 const options = {
     encrypt: false,
+    enableArithAbort: false,
 }
 
 // 泛微OA数据库链接配置(领地公司)
@@ -38,14 +41,16 @@ const configcd = {
     pool,
 };
 
+
+
 // MySQL数据库连接配置(Jeecg-Boot)
 const mysql = {
     client: {
-        host: '172.18.254.95',
-        port: '39090',
-        user: 'zhaoziyun',
-        password: 'ziyequma',
-        database: 'xdata',
+        host: defaultConfig.mysql.client.host,
+        port: defaultConfig.mysql.client.port,
+        user: defaultConfig.mysql.client.user,
+        password: defaultConfig.mysql.client.password,
+        database: defaultConfig.mysql.client.database,
     },
     app: true,
     agent: false,
