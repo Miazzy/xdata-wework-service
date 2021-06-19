@@ -13,20 +13,16 @@ class BussinessController extends Controller {
      * @function 获取用户管理组信息
      */
     async queryGroupLimits() {
-        // 获取用户信息
-        const username = this.ctx.query.username || this.ctx.params.username || '';
-        // 设置返回结果
-        this.ctx.body = await this.ctx.service.bussiness.queryGroupLimits(username);
+        const username = this.ctx.query.username || this.ctx.params.username || ''; // 获取用户信息
+        this.ctx.body = await this.ctx.service.bussiness.queryGroupLimits(username); // 设置返回结果
     }
 
     /**
      * @function 获取用户管理组信息
      */
     async queryGroupLimitsByID() {
-        // 获取用户信息
-        const username = this.ctx.query.username || this.ctx.params.username || '';
-        // 设置返回结果
-        this.ctx.body = await this.ctx.service.bussiness.queryGroupLimitsByID(username);
+        const username = this.ctx.query.username || this.ctx.params.username || ''; // 获取用户信息
+        this.ctx.body = await this.ctx.service.bussiness.queryGroupLimitsByID(username); // 设置返回结果
     }
 
 }
