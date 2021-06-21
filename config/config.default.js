@@ -256,11 +256,7 @@ module.exports = appInfo => {
     }
 
     config.eggEtcd = {
-        hosts: [
-            '172.18.1.51:32777',
-            '172.18.1.51:32776',
-            '172.18.1.51:32779',
-        ],
+        hosts: ['172.18.1.51:32777', '172.18.1.51:32776', '172.18.1.51:32779', ],
         auth: {
             username: 'root',
             password: 'ziyequma',
