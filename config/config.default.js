@@ -16,6 +16,7 @@ module.exports = appInfo => {
 
     const userConfig = {
         myAppName: 'xdata-wework-service',
+        esSyncName: 'xdata-essync-service', //elasticsearch同步服务名称
     };
 
     const nacosIP = 'nacos.yunwisdom.club'; //nacos IP地址
@@ -198,7 +199,7 @@ module.exports = appInfo => {
         logger: console,
         serverList: nacosList, // replace to real nacos serverList
         namespace: 'public',
-        serviceName: 'xdata-essync-service',
+        serviceName: userConfig.esSyncName,
         es: {
             host: elasticsearchIP,
             port: elasticsearchPort,
