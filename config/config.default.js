@@ -181,7 +181,7 @@ module.exports = appInfo => {
         logger: console,
         serverList: nacosList, // replace to real nacos serverList
         namespace: 'public',
-        serviceName: 'xdata-wework-service',
+        serviceName: userConfig.myAppName, // 'xdata-wework-service',
     };
 
     config.elasticsearch = {
