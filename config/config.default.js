@@ -33,6 +33,7 @@ module.exports = appInfo => {
 
     const elasticsearchIP = 'elasticsearch.yunwisdom.club:30080';
     const elasticsearchPort = 30080;
+    const elasticsearchVersion = '7.x';
 
     config.security = {
         csrf: {
@@ -52,8 +53,8 @@ module.exports = appInfo => {
         port: 465,
         secure: true, // true for 465, false for other ports
         auth: {
-            user: 'zhaoziyu@yunwisdom.club', // generated ethereal user
-            pass: 'Miazzy@163.com', // generated ethereal password
+            user: 'zhaoziyu@yunwisdom.club',
+            pass: 'Miazzy@163.com',
         },
     };
 
@@ -189,7 +190,7 @@ module.exports = appInfo => {
 
     config.elasticsearch = {
         host: elasticsearchIP,
-        apiVersion: '7.x'
+        apiVersion: elasticsearchVersion
     };
 
     config.elasticsearchsync = {
@@ -201,7 +202,7 @@ module.exports = appInfo => {
         es: {
             host: elasticsearchIP,
             port: elasticsearchPort,
-            apiVersion: '7.x',
+            apiVersion: elasticsearchVersion,
         },
         mysql: {
             host: config.mysql.client.host,
@@ -268,6 +269,4 @@ module.exports = appInfo => {
         ...config,
         ...userConfig,
     };
-};
-};
 };
