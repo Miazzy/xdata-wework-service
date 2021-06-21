@@ -32,6 +32,7 @@ module.exports = appInfo => {
     const mysqlDatabase = 'xdata';
 
     const elasticsearchIP = 'elasticsearch.yunwisdom.club:30080';
+    const elasticsearchPort = 30080;
 
     config.security = {
         csrf: {
@@ -198,8 +199,8 @@ module.exports = appInfo => {
         namespace: 'public',
         serviceName: 'xdata-essync-service',
         es: {
-            host: 'elasticsearch.yunwisdom.club:30080',
-            port: 30080,
+            host: elasticsearchIP,
+            port: elasticsearchPort,
             apiVersion: '7.x',
         },
         mysql: {
