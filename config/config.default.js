@@ -36,6 +36,10 @@ module.exports = appInfo => {
     const elasticsearchPort = 30080;
     const elasticsearchVersion = '7.x';
 
+    const etcdIP = ['172.18.1.51:32777', '172.18.1.51:32776', '172.18.1.51:32779', ];
+    const etcdAccount = 'root';
+    const etcdPassword = 'ziyequma';
+
     config.security = {
         csrf: {
             enable: false,
@@ -256,10 +260,10 @@ module.exports = appInfo => {
     }
 
     config.eggEtcd = {
-        hosts: ['172.18.1.51:32777', '172.18.1.51:32776', '172.18.1.51:32779', ],
+        hosts: etcdIP,
         auth: {
-            username: 'root',
-            password: 'ziyequma',
+            username: etcdAccount,
+            password: etcdPassword,
         },
     };
 
