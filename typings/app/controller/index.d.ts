@@ -4,7 +4,6 @@
 import 'egg';
 import ExportBussiness = require('../../../app/controller/bussiness');
 import ExportDatabase = require('../../../app/controller/database');
-import ExportDatabasecd = require('../../../app/controller/databasecd');
 import ExportDatasync = require('../../../app/controller/datasync');
 import ExportElasticsearch = require('../../../app/controller/elasticsearch');
 import ExportEssync = require('../../../app/controller/essync');
@@ -24,7 +23,6 @@ declare module 'egg' {
   interface IController {
     bussiness: ExportBussiness;
     database: ExportDatabase;
-    databasecd: ExportDatabasecd;
     datasync: ExportDatasync;
     elasticsearch: ExportElasticsearch;
     essync: ExportEssync;

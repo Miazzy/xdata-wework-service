@@ -45,7 +45,6 @@ declare module 'egg' {
     mysql?: EggPluginItem;
     oracle?: EggPluginItem;
     mssql?: EggPluginItem;
-    httpProxy?: EggPluginItem;
     redis?: EggPluginItem;
     nacos?: EggPluginItem;
     ratelimiter?: EggPluginItem;

@@ -4,7 +4,7 @@
 'use strict';
 
 const sql = require('mssql');
-const defaultConfig = require('./config.default');
+const defaultConfig = require('./config.default')();
 
 // 数据库连接池配置
 const pool = {
@@ -25,7 +25,7 @@ const config = {
     password: defaultConfig.mssql.clients.db1.password,
     server: defaultConfig.mssql.clients.db1.server,
     database: defaultConfig.mssql.clients.db1.database,
-    port: defaultConfig.mssql.clients.db1.port,
+    port: parseInt(defaultConfig.mssql.clients.db1.port),
     options,
     pool,
 };
@@ -36,7 +36,7 @@ const configcd = {
     password: defaultConfig.mssql.clients.db2.password,
     server: defaultConfig.mssql.clients.db2.server,
     database: defaultConfig.mssql.clients.db2.database,
-    port: defaultConfig.mssql.clients.db2.port,
+    port: parseInt(defaultConfig.mssql.clients.db2.port),
     options,
     pool,
 };

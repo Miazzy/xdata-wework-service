@@ -11,7 +11,7 @@ const redisStore = require('cache-manager-ioredis');
 module.exports = appInfo => {
 
     const config = exports = {};
-    config.keys = appInfo.name + '_0000_5432';
+    config.keys = appInfo ? appInfo.name : '';
     config.middleware = [];
     const userConfig = {
         myAppName: 'xdata-wework-service',
