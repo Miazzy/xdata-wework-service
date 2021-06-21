@@ -13,6 +13,7 @@ module.exports = appInfo => {
     const config = exports = {};
     config.keys = appInfo ? appInfo.name : '';
     config.middleware = [];
+
     const userConfig = {
         myAppName: 'xdata-wework-service',
     };
