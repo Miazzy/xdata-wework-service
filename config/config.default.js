@@ -25,6 +25,12 @@ module.exports = appInfo => {
     const redisPassword = 'Redis@password';
     const redisPort = 6379;
 
+    const mysqlIP = '172.18.254.95';
+    const mysqlPort = '39090';
+    const mysqlAccount = 'zhaoziyun';
+    const mysqlPassword = 'ziyequma';
+    const mysqlDatabase = 'xdata';
+
     config.security = {
         csrf: {
             enable: false,
@@ -108,11 +114,11 @@ module.exports = appInfo => {
     // mysql数据库连接配置
     config.mysql = {
         client: { // database configuration
-            host: '172.18.254.95',
-            port: '39090',
-            user: 'zhaoziyun',
-            password: 'ziyequma',
-            database: 'xdata',
+            host: mysqlIP,
+            port: mysqlPort,
+            user: mysqlAccount,
+            password: mysqlPassword,
+            database: mysqlDatabase,
         },
         procedure: false,
         app: true,
@@ -259,4 +265,6 @@ module.exports = appInfo => {
         ...config,
         ...userConfig,
     };
+};
+};
 };
