@@ -117,7 +117,7 @@ module.exports = appInfo => {
 
     // mysql数据库连接配置
     config.mysql = {
-        client: { // database configuration
+        client: {
             host: mysqlIP,
             port: mysqlPort,
             user: mysqlAccount,
