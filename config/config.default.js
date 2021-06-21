@@ -31,6 +31,8 @@ module.exports = appInfo => {
     const mysqlPassword = 'ziyequma';
     const mysqlDatabase = 'xdata';
 
+    const elasticsearchIP = 'elasticsearch.yunwisdom.club:30080';
+
     config.security = {
         csrf: {
             enable: false,
@@ -185,7 +187,7 @@ module.exports = appInfo => {
     };
 
     config.elasticsearch = {
-        host: 'elasticsearch.yunwisdom.club:30080',
+        host: elasticsearchIP,
         apiVersion: '7.x'
     };
 
