@@ -59,6 +59,7 @@ module.exports = appInfo => {
         },
     };
 
+    // OSS对象存储配置
     config.oss = {
         client: {
             accessKeyId: 'your access key',
@@ -66,6 +67,16 @@ module.exports = appInfo => {
             bucket: 'your bucket name',
             endpoint: 'oss-cn-hongkong.aliyuncs.com',
             timeout: '60s',
+        },
+    };
+
+    // Redis缓存配置
+    config.redis = {
+        client: {
+            host: redisIP,
+            password: redisPassword,
+            port: redisPort,
+            db: 0,
         },
     };
 
@@ -172,15 +183,7 @@ module.exports = appInfo => {
         fileSize: '1024mb', // 设置最大可以上传文件大小
     };
 
-    config.redis = {
-        client: {
-            host: redisIP,
-            password: redisPassword,
-            port: redisPort,
-            db: 0,
-        },
-    };
-
+    // 配置注册中心Nacos配置
     config.nacos = {
         register: true,
         logger: console,
@@ -189,11 +192,13 @@ module.exports = appInfo => {
         serviceName: userConfig.myAppName, // 'xdata-wework-service',
     };
 
+    // 搜索引擎ES配置
     config.elasticsearch = {
         host: elasticsearchIP,
         apiVersion: elasticsearchVersion
     };
 
+    // 搜索引擎ES同步服务配置
     config.elasticsearchsync = {
         register: false,
         logger: console,
