@@ -245,7 +245,7 @@ module.exports = appInfo => {
             '172.18.1.51:32776',
             '172.18.1.51:32779',
         ],
-        auth: { //curl -L http://localhost:32777/v3/auth/user/add  -X POST -d '{"name": "root", "password": "ziyequma"}'
+        auth: {
             username: 'root',
             password: 'ziyequma',
         },
